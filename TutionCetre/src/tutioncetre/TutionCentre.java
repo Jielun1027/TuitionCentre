@@ -16,6 +16,7 @@ public class TutionCentre {
         // TODO code application logic here
         System.out.println("Testing 1");
         System.out.println("HL test");
+        System.out.println("chin test");
     }
     
 }
