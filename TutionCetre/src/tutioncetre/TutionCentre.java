@@ -17,6 +17,8 @@ public class TutionCentre {
         System.out.println("Testing 1");
         System.out.println("HL test");
         System.out.println("chin test");
+        System.out.println("test pivotal");
+
     }
-    
+
 }
