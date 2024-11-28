@@ -17,6 +17,15 @@ public class UserAccount {
     private String email;
     private String userType;
 
+    public UserAccount(String username, String password, String firstName, String secondName, String email, String userType) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.email = email;
+        this.userType = userType;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -64,5 +73,12 @@ public class UserAccount {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+
+    @Override
+    public String toString() {
+        return "UserAccount{" + "username=" + username + ", password=" + password + ", firstName=" + firstName + ", secondName=" + secondName + ", email=" + email + ", userType=" + userType + '}';
+    }
+    
+    
 
 }
