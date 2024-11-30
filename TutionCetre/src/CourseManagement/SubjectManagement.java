@@ -1,4 +1,4 @@
-package SubjectManagementModule;
+package CourseManagement;
 
 /**
  * Class to manage Subject details
