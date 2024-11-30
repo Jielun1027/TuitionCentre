@@ -15,29 +15,81 @@ import Student.Student;
 
 public class TutionFeePage {
 
+    private static List<Course> unpaidCourses = new ArrayList<>();
+    private static Set<String> paidMonths = new HashSet<>();
+    private static Student student;
+
     public static void main(String[] args) {
+        initializeCourses();
+        initializeStudent();
+
         Scanner scanner = new Scanner(System.in);
 
-        Course course1 = new Course("C001", "Science", 120.0);
-        Course course2 = new Course("C003", "English", 110.0);
-        Course course3 = new Course("C004", "Mathematics", 130.0);
+        while (true) {
+            System.out.println("================");
+            System.out.println("Payment");
+            System.out.println("================");
+            System.out.println("1. Make Payment");
+            System.out.println("2. View Payment History");
+            System.out.println("================");
+            System.out.print("Enter Selection: ");
 
-        Student student1 = new Student("12345", "John Doe", Arrays.asList(course1, course2, course3));
+            int selection = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        PaymentService paymentService = new PaymentService();
+            switch (selection) {
+                case 1:
+                    makePayment(scanner);
+                    break;
+                case 2:
+                    System.out.println("This feature is still under development");
+                    break;
+                default:
+                    System.out.println("Invalid selection. Exiting...");
+                    return;
+            }
+        }
+    }
 
-        System.out.println("\nStudent Name: " + student1.getStudentName());
-        System.out.println("=========   ========================   ==========");
-        System.out.println("Course ID   Course Name                 Price");
-        System.out.println("=========   ========================   ==========");
+    private static void initializeCourses() {
+        unpaidCourses.add(new Course("C001", "Science", 120.0));
+        unpaidCourses.add(new Course("C003", "English", 110.0));
+        unpaidCourses.add(new Course("C004", "Mathematics", 130.0));
+    }
+
+    private static void initializeStudent() {
+        student = new Student("12345", "John Doe", unpaidCourses);
+    }
+
+    private static void makePayment(Scanner scanner) {
+        String currentMonth = LocalDate.now().getMonth().toString();
+        currentMonth = currentMonth.substring(0, 1) + currentMonth.substring(1).toLowerCase();
+
+        if (paidMonths.contains(currentMonth)) {
+            System.out.println("\nTuition fee for " + currentMonth + " has already been paid.\n");
+            return;
+        }
+
+        if (student.getEnrolledCourses().isEmpty()) {
+            System.out.println("\nNo courses to be paid for.\n");
+            return;
+        }
+
+        // Display student information and courses to be paid
+        System.out.println("\n\nStudent Name: " + student.getStudentName());
+        System.out.println("\n              Tuition Fee(" + currentMonth + ")");
+        System.out.println("========   ========================   ============");
+        System.out.println("Course ID   Course Name                 Price(RM)");
+        System.out.println("========   ========================   ============");
+
         double totalAmount = 0;
-        for (Course course : student1.getEnrolledCourses()) {
+        for (Course course : student.getEnrolledCourses()) {
             System.out.printf("%-10s  %-25s   %-10.2f\n", course.getCourseId(), course.getCourseName(), course.getPrice());
             totalAmount += course.getPrice();
         }
-        System.out.println("=========   ========================   ==========");
-        System.out.printf("%-10s %-25s    %-10.2f\n", "Total", "", totalAmount);
-        System.out.println("=========   ========================   ==========");
+        System.out.println("========   ========================   ============");
+        System.out.printf("%-10s %-25s    %-10.2f\n", "Total(RM)", "", totalAmount);
+        System.out.println("========   ========================   ============");
 
         System.out.println("\nSelect a payment method:");
         System.out.println("1. Credit/Debit Card");
@@ -63,11 +115,8 @@ public class TutionFeePage {
                 return;
         }
 
-        String currentMonth = LocalDate.now().getMonth().toString();
-        currentMonth = currentMonth.substring(0, 1) + currentMonth.substring(1).toLowerCase();
+        paidMonths.add(currentMonth);
 
-        System.out.println("\nTuition fee for " + currentMonth + " is paid successfully!");
-
-        scanner.close();
+        System.out.println("\nTuition fee for " + currentMonth + " is paid successfully using " + paymentMethod + "!\n");
     }
 }
