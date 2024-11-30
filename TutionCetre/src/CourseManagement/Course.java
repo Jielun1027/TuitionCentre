@@ -18,8 +18,10 @@ public class Course {
         this.courseId = courseId;
         this.courseName = courseName;
         this.price = price;
+        
     }
 
+    
     public String getCourseId() {
         return courseId;
     }
@@ -31,7 +33,9 @@ public class Course {
     public String getCourseName() {
         return courseName;
     }
-
+    
+  
+      
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
