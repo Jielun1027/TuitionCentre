@@ -10,7 +10,7 @@ package TuitionFee;
  */
 import java.util.ArrayList;
 import java.util.List;
-import Course.Course;
+import CourseManagement.Course;
 import Student.Student;
 
 public class PaymentService {

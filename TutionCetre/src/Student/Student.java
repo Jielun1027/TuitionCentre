@@ -9,7 +9,7 @@ package Student;
  * @author User
  */
 import java.util.*;
-import Course.Course;
+import CourseManagement.Course;
 
 public class Student {
     private String studentId;

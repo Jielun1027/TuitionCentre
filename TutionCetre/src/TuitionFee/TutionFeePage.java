@@ -10,7 +10,7 @@ package TuitionFee;
  */
 import java.time.LocalDate;
 import java.util.*;
-import Course.Course;
+import CourseManagement.Course;
 import Student.Student;
 
 public class TutionFeePage {
