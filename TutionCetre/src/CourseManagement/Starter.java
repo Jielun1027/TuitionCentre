@@ -17,7 +17,7 @@ public class Starter {
         Scanner sc = new Scanner(System.in);
         while (true) {
 
-            SubjectUII ui = new SubjectUII();
+            CourseUI ui = new CourseUI();
             int choice = ui.mainMenu();
 
             switch (choice) {
@@ -38,4 +38,5 @@ public class Starter {
     }
 
 }
+
 
