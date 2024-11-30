@@ -17,12 +17,34 @@ public class UserAccountUtilities {
 
         return data.length() <= maxLength;
     }
+
+//        public static boolean validateUsername(String data, int maxLength) {
+//        if (data == null) {
+//            return false;
+//        }
+//
+//        return data.length() <= maxLength;
+//    }
     
-        public static boolean validateUsername(String data, int maxLength) {
-        if (data == null) {
+    public static boolean validateDigit(String input, int minRange, int maxRange) {
+
+        try {
+            if (input == null) {
+                return false;
+            }
+
+            // Parse the input string to an integer
+            int value = Integer.parseInt(input);
+
+            // Check if the parsed integer is within the specified range
+            if (value >= minRange && value <= maxRange) {
+                return true; // Valid integer within the range
+            } else {
+                return false; // Integer is outside the range
+            }
+        } catch (NumberFormatException e) {
+            // Parsing failed, input is not a valid integer
             return false;
         }
-
-        return data.length() <= maxLength;
     }
 }

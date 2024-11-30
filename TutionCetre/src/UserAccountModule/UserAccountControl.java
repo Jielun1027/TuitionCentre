@@ -12,33 +12,40 @@ import java.util.Scanner;
  */
 public class UserAccountControl {
 
-    Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
     private static UserAccountControl control = new UserAccountControl();
 
     public UserAccount createUserAccount() {
-        String username = inputData("username",20);
-        String password = inputData("password",20);
-        String firstName = inputData("firstName",20);
-        String secondName = inputData("secondName",20);
-        String email = inputData("email",20);
-        String userType = inputData("userType",10);
+        System.out.println("\n\n-------------------");
+        System.out.println("Register an Account");
+        System.out.println("-------------------");
+        String username = inputData("username", 20);
+        String password = inputData("password", 20);
+        String firstName = inputData("firstName", 20);
+        String secondName = inputData("secondName", 20);
+        String email = inputData("email", 20);
+        String userType = inputData("userType", 10);
 
         return new UserAccount(username, password, firstName, secondName, email, userType);
     }
 
     public void addUserAccount() {
-        UserAccount newUser = control.createUserAccount();
-        System.out.println(newUser.toString());
+        try {
+            UserAccount newUser = control.createUserAccount();
+            System.out.println("\nCreated a user account successfully.");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
-    public String inputData(String dataField,int maxLength) {
+    public String inputData(String dataField, int maxLength) {
         boolean valid = false;
         String data = "";
 
         while (valid == false) {
             System.out.print("Enter " + dataField + ": ");
             data = scanner.nextLine();
-            System.out.println();
             valid = true;
             valid = UserAccountUtilities.validateStringLength(data, maxLength);
 
@@ -50,8 +57,38 @@ public class UserAccountControl {
         return data;
     }
 
-    public static void main(String[] args) {
+    public static void moduleUI() {
+        System.out.println("-------------------");
+        System.out.println("User Account Module");
+        System.out.println("-------------------");
+        System.out.println("1. Register Account \n");
+        System.out.print("Your option : ");
 
-        control.addUserAccount();
+    }
+
+    public static void main(String[] args) {
+        boolean choiceValid = false;
+        int choice = 0;
+
+        while (choiceValid == false) {
+            control.moduleUI();
+
+            String input = scanner.nextLine();
+            choiceValid = UserAccountUtilities.validateDigit(input, 1, 1);
+
+            if (choiceValid == true) {
+                choice = Integer.parseInt(input);
+            }
+
+        }
+
+        switch (choice) {
+            case 1:
+                control.addUserAccount();
+                break;
+            default:
+                break;
+        }
+
     }
 }
