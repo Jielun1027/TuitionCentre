@@ -8,7 +8,10 @@ package UserAccountModule;
  *
  * @author Hafiz Chew Hoe Leong
  */
-public class UserAccount {
+
+import java.io.Serializable;
+
+public class UserAccount implements Serializable {
 
     private String username;
     private String password;
