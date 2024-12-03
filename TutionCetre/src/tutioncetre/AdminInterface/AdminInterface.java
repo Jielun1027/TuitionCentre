@@ -89,13 +89,17 @@ public class AdminInterface {
     }
 
     // Print all class timetables
-    public void printAllTimetables() {
+public void printAllTimetables() {
+    if (classTimetables.isEmpty()) {
+        System.out.println("No timetables exist.");
+    } else {
         classTimetables.forEach((className, timetable) -> {
             System.out.println("Timetable for " + className + ":");
             timetable.printTimetable();
             System.out.println();
         });
     }
+}
 
     // Function to customize timetables
     public void customizeTimetable() {
