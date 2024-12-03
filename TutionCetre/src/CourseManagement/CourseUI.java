@@ -52,7 +52,7 @@ public class CourseUI {
                     helper.clearConsole();
                     break;
                 case 2:
-                    displaySubjects();
+                    displayAll();
                     break;
                 case 3:
                     // TODO: Implement editSubject()
@@ -170,11 +170,42 @@ public class CourseUI {
      * Must be a positive numeric value.
      */
     private static boolean validatePrice(String priceInput) {
-        try {
-            double price = Double.parseDouble(priceInput);
-            return price > 0;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    try {
+        double price = Double.parseDouble(priceInput); // Convert input to double
+        return price >= 50 && price <= 1000; // Validate price within the range
+    } catch (NumberFormatException e) {
+        return false; // Return false if input is not a valid number
     }
 }
+
+
+/**
+     * ******************************************** DISPLAY ALL SUBJECT LIST
+     * *********************************************
+     */
+    public static void displayAll() {
+    helper.clearConsole();
+    System.out.println("+----------------------------------------------------------------------------------------------------------------+");
+    System.out.println("|                                               SUBJECT REPORT                                                    |");
+    System.out.println("+----------------------------------------------------------------------------------------------------------------+");
+    System.out.println("| NO |      SUBJECT ID       |             SUBJECT NAME             |                SUBJECT DESCRIPTION          |");
+    System.out.println("+----------------------------------------------------------------------------------------------------------------+");
+
+    if (subjects.size() != 0) { // Assuming subjects is a List or similar collection
+
+        for (int i = 0; i < subjects.size(); i++) {
+            Course subject = subjects.get(i); // Assuming Subject is the class used to represent a subject
+            System.out.printf("| %02d | %-20s | %-30s | %-50s |\n",
+                    i + 1, subject.getCourseId(), subject.getCourseName(), subject.getPrice());
+        }
+
+    } else {
+        System.out.println("|                                             No records available                                              |");
+    }
+
+    System.out.println("+----------------------------------------------------------------------------------------------------------------+");
+    System.out.println("|                                              END OF REPORT                                                     |");
+    System.out.println("+----------------------------------------------------------------------------------------------------------------+");
+}
+}
+
