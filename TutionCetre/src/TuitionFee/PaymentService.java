@@ -33,13 +33,13 @@ public class PaymentService {
         return true;
     }
 
-//    public void displayPaymentsForStudent(String studentId) {
-//        System.out.println("Payments for StudentID: " + studentId);
-//        for(Payment payment: payments){
-//            if(payment.getStudent().getStudentId().equals(studentId)){
-//                System.out.println(payment);
-//            }
-//        }
-//    }
-//  
+    public void displayPaymentsForStudent(String studentId) {
+        System.out.println("Payments for StudentID: " + studentId);
+        for(Payment payment: payments){
+            if(payment.getStudent().getStudentId().equals(studentId)){
+                System.out.println(payment);
+            }
+        }
+    }
+  
 }
