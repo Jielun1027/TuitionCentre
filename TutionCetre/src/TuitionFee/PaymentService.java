@@ -14,24 +14,25 @@ import CourseManagement.Course;
 import Student.Student;
 
 public class PaymentService {
+
     private List<Payment> payments;
-    
-    public PaymentService(){
+
+    public PaymentService() {
         this.payments = new ArrayList<>();
     }
-    
+
     public Payment createPayment(Student student, Course course, double amountPaid, String paymentMethod) {
         String paymentId = "TFP" + (payments.size() + 1);
         Payment payment = new Payment(paymentId, student, course, amountPaid, paymentMethod);
         payments.add(payment);
         return payment;
     }
-    
-    public boolean updatePaymentStatus(Payment payment){
+
+    public boolean updatePaymentStatus(Payment payment) {
         payment.setPaid(true);
         return true;
     }
-    
+
 //    public void displayPaymentsForStudent(String studentId) {
 //        System.out.println("Payments for StudentID: " + studentId);
 //        for(Payment payment: payments){

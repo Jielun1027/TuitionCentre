@@ -8,19 +8,18 @@ package TuitionFee;
  *
  * @author Chiew Jie Lun
  */
-
 import java.time.LocalDate;
 import CourseManagement.Course;
 import Student.Student;
 
 public class Payment {
-    private String paymentId;   
-    private Student student;  
-    private Course course;   
-    private double amountPaid; 
-    private String paymentMethod; 
-    private LocalDate paymentDate; 
-    private boolean isPaid;     
+    private String paymentId;
+    private Student student;
+    private Course course;
+    private double amountPaid;
+    private String paymentMethod;
+    private LocalDate paymentDate;
+    private boolean isPaid;
 
     public Payment(String paymentId, Student student, Course course, double amountPaid, String paymentMethod) {
         this.paymentId = paymentId;

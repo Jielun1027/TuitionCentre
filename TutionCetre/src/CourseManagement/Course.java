@@ -12,13 +12,14 @@ public class Course {
     private String courseId;
     private String courseName;
     private double price;
-    
-    public Course(String courseId, String courseName, double price){
+
+    public Course(String courseId, String courseName, double price) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.price = price;
+        
     }
-
+    
     public String getCourseId() {
         return courseId;
     }
@@ -53,5 +54,4 @@ public class Course {
         sb.append('}');
         return sb.toString();
     }
-    
 }

@@ -8,6 +8,7 @@ package Student;
  *
  * @author User
  */
+
 import java.util.*;
 import CourseManagement.Course;
 
@@ -52,6 +53,4 @@ public class Student {
             System.out.println(course);
         }
     }
-    
-    
 }
