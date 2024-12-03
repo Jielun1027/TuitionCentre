@@ -79,7 +79,7 @@ public class AdminInterface {
             classTimetables.put(className, new Timetable());
             System.out.println("Class " + className + " added.");
         } else {
-            System.out.println("Class " + className + " already exists.");
+            System.out.println("Class " + className + " already exist.");
         }
     }
 
