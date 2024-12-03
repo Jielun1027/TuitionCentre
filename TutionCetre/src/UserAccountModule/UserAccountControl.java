@@ -75,22 +75,6 @@ public class UserAccountControl {
         return new UserAccount(username, password, firstName, secondName, email, userType);
     }
 
-    public void addUserAccount(List<UserAccount> users) {
-        try {
-            UserAccount newUser = control.createUserAccount();
-            if (control.isDuplicate(newUser.getUsername(), newUser.getEmail(), users)) {
-                System.out.println("\nFailed to create the account: Username or Email already exists.");
-            } else {
-                users.add(newUser);
-                control.saveUsers(users);
-                System.out.println("\nCreated a user account successfully!");
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-    }
-
     public String inputData(String dataField, int maxLength) {
         boolean valid = false;
         String data = "";
@@ -207,7 +191,34 @@ public class UserAccountControl {
         System.out.println("User Account Module");
         System.out.println("-------------------");
         System.out.println("1. Register Account \n");
+        System.out.println("2. Login \n");
         System.out.print("Your option : ");
+
+    }
+
+    public void registerAccount(List<UserAccount> users) {
+        try {
+            UserAccount newUser = control.createUserAccount();
+            if (control.isDuplicate(newUser.getUsername(), newUser.getEmail(), users)) {
+                System.out.println("\nFailed to create the account: Username or Email already exists.");
+            } else {
+                users.add(newUser);
+                control.saveUsers(users);
+                System.out.println("\nCreated a user account successfully!");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
+
+    public void login(List<UserAccount> users) {
+        try {
+            //login function
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
     }
 
@@ -215,7 +226,7 @@ public class UserAccountControl {
         boolean choiceValid = false;
         int choice = 0;
         int firstChoice = 1;
-        int lastChoice = 1;
+        int lastChoice = 2;
 
         List<UserAccount> users = control.loadUsers();
 
@@ -242,9 +253,12 @@ public class UserAccountControl {
         switch (choice) {
 
             case 1:
-                while (firstChoice == 1) {
-                    control.addUserAccount(users);
-                }
+                control.registerAccount(users);
+                break;
+            case 2:
+//                while (choice == 2) {
+                    control.login(users);
+//                }
                 break;
             default:
                 break;
