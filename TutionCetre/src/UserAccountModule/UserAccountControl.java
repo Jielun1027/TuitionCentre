@@ -51,7 +51,7 @@ public class UserAccountControl {
         }
     }
 
-    public static boolean isDuplicate(String username, String email, List<UserAccount> users) {
+    public static boolean isUniqueDuplicate(String username, String email, List<UserAccount> users) {
         for (UserAccount user : users) {
             if (user.getUsername().equalsIgnoreCase(username) || user.getEmail().equalsIgnoreCase(email)) {
                 return true;
@@ -199,7 +199,7 @@ public class UserAccountControl {
     public void registerAccount(List<UserAccount> users) {
         try {
             UserAccount newUser = control.createUserAccount();
-            if (control.isDuplicate(newUser.getUsername(), newUser.getEmail(), users)) {
+            if (control.isUniqueDuplicate(newUser.getUsername(), newUser.getEmail(), users)) {
                 System.out.println("\nFailed to create the account: Username or Email already exists.");
             } else {
                 users.add(newUser);
@@ -212,10 +212,36 @@ public class UserAccountControl {
 
     }
 
-    public void login(List<UserAccount> users) {
+    public UserAccount enterUserAccount() {
+        System.out.println("\n\n-------------------");
+        System.out.println("Login To System");
+        System.out.println("-------------------");
+
+        String username = inputData("Username", 20);
+        String password = inputData("Password", 20);
+
+        return new UserAccount(username, password, "", "", "", "");
+    }
+
+    public boolean checkLoginInfo(String username, String password, List<UserAccount> users) {
+        for (UserAccount user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public void loginSystem(List<UserAccount> users) {
         try {
             //login function
-
+            UserAccount newUser = control.enterUserAccount();
+            if (control.checkLoginInfo(newUser.getUsername(), newUser.getPassword(), users)) {
+                System.out.println("\nLogin Successfully.");
+            } else {
+                System.out.println("\nThe username or password is incorrect.");
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -230,12 +256,13 @@ public class UserAccountControl {
 
         List<UserAccount> users = control.loadUsers();
 
-//        while (choice == 0) {
+        while (choice == 0) {
 //            System.out.println("enter:");
 //            String data = scanner.nextLine();
 //            UserAccountUtilities.validateUserType(data);
-//
-//        }
+            control.loginSystem(users);
+
+        }
         while (choiceValid == false) {
             control.moduleUI();
 
@@ -257,7 +284,7 @@ public class UserAccountControl {
                 break;
             case 2:
 //                while (choice == 2) {
-                    control.login(users);
+                control.loginSystem(users);
 //                }
                 break;
             default:
