@@ -164,7 +164,7 @@ public void printAllTimetables() {
                         } while (period < 1 || period > 8); // Keep asking until valid period is entered
 
                         // Ask for subject input
-                        System.out.print("Enter Subject: ");
+                        System.out.print("Enter a Subject: ");
                         String subject = scanner.nextLine().trim();
                         if (subject.isEmpty()) {
                             System.out.println("Subject cannot be empty. Please try again.");
