@@ -217,8 +217,31 @@ public class UserAccountControl {
         System.out.println("Login To System");
         System.out.println("-------------------");
 
-        String username = inputData("Username", 20);
-        String password = inputData("Password", 20);
+        String username = "";
+
+        boolean valid = false;
+        do {
+            username = inputData("Username", 20);
+            valid = !UserAccountUtilities.checkEmpty(username);
+
+            if (!valid) {
+                System.out.println("The field must not be blank.");
+            }
+        } while (valid == false);
+
+        valid = false;
+        
+        
+        String password = "";
+
+        do {
+            password = inputData("Password", 20);
+            valid = !UserAccountUtilities.checkEmpty(password);
+
+            if (!valid) {
+                System.out.println("The field must not be blank.");
+            }
+        } while (valid == false);
 
         return new UserAccount(username, password, "", "", "", "");
     }

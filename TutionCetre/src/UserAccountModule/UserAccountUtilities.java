@@ -60,7 +60,6 @@ public class UserAccountUtilities {
     }
 
     public static boolean validateText(String data) {
-        // Validate if a string is a email 
         boolean isMatch = Pattern.compile("^[a-zA-Z]+[\\-'\\s]?[a-zA-Z ]+$")
                 .matcher(data)
                 .find();
@@ -83,6 +82,10 @@ public class UserAccountUtilities {
                 .matcher(data)
                 .find();
         return isMatch;
+    }
+
+    public static boolean checkEmpty(String data) {
+        return data.trim().isEmpty();
     }
 
     public static void invalidMessage(String strText) {
