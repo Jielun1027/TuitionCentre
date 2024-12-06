@@ -18,7 +18,21 @@ public class CourseUI {
     static List<Course> subjects = new ArrayList<>();
     static BufferedReader enter = new BufferedReader(new InputStreamReader(System.in));
     static Helper helper = new Helper();
+    
+  public static void hardCodeData() {
+        // Creating and adding subjects
+        Course subject1 = new Course("SUBJ001", "Introduction to Programming", 100.0);
+        subjects.add(subject1);
 
+        Course subject2 = new Course("SUBJ002", "Data Structures and Algorithms", 200.0);
+        subjects.add(subject2);
+
+        Course subject3 = new Course("SUBJ003", "Software Engineering", 300.0);
+        subjects.add(subject3);
+
+        Course subject4 = new Course("SUBJ004", "Database Management", 150.0);
+        subjects.add(subject4);
+    }
     public static int mainMenu() {
         System.out.println("**********************");
         System.out.println("*      Selection     *");
@@ -33,9 +47,12 @@ public class CourseUI {
     }
 
     public static void tutorMain() throws IOException {
+        hardCodeData() ;
+                
+        // Creating and adding subj
         while (true) {
             System.out.println("*************************");
-            System.out.println("*      Tutor Module     *");
+            System.out.println("*      Subject Module     *");
             System.out.println("*************************");
             System.out.println("*  1. Add New Subject   *");
             System.out.println("*  2. View Subjects     *");
@@ -85,7 +102,7 @@ public class CourseUI {
                 System.out.print("Enter Subject ID (e.g., SUBJ123): ");
                 subjectId = enter.readLine().trim();
                 if (validateSubjectId(subjectId)) break;
-                System.out.println("Invalid Subject ID format. It should start with 'SUBJ' followed by 3 digits.");
+
             }
 
             // Subject Name Validation
@@ -93,7 +110,7 @@ public class CourseUI {
                 System.out.print("Enter Subject Name: ");
                 subjectName = enter.readLine().trim();
                 if (validateSubjectName(subjectName)) break;
-                System.out.println("Invalid Subject Name. It should not be empty and can only contain letters and spaces.");
+               
             }
 
             // Price Validation
@@ -103,9 +120,7 @@ public class CourseUI {
                 if (validatePrice(priceInput)) {
                     price = Double.parseDouble(priceInput); // Parse and store valid price
                     break;
-                } else {
-                    System.out.println("Invalid Price. Please enter a positive numeric value.");
-                }
+                } 
             }
 
             // Add Subject to List
@@ -147,36 +162,66 @@ public class CourseUI {
         System.out.println("******************************************************");
     }
 
-    /**
-     * Validates Subject ID format.
-     * Format: Must start with 'SUBJ' followed by 3 digits.
-     */
-    public static boolean validateSubjectId(String subjectId) {
-        Pattern pattern = Pattern.compile("^SUBJ\\d{3}$");
-        Matcher matcher = pattern.matcher(subjectId);
-        return matcher.matches();
+  public static boolean validateSubjectId(String subjectId) {
+    // Step 1: Check the format
+    Pattern pattern = Pattern.compile("^SUBJ\\d{3}$");
+    Matcher matcher = pattern.matcher(subjectId);
+    if (!matcher.matches()) {
+        System.out.println("Invalid Subject ID format. It should start with 'SUBJ' followed by 3 digits.");
+        return false; // Exit early if format is invalid
     }
 
+    // Step 2: Check for duplicates
+    for (Course subject : subjects) {
+        if (subject.getCourseId().equalsIgnoreCase(subjectId)) {
+            System.out.println("Duplicate Subject ID: " + subjectId + " already exists.");
+            return false; // Exit early if duplicate is found
+        }
+    }
+
+    
+    return true;
+}
+
     /**
-     * Validates Subject Name.
+     * Validates Subject Name and checks for duplicates.
      * Must not be empty and can only contain letters and spaces.
      */
     public static boolean validateSubjectName(String subjectName) {
-        return !subjectName.isEmpty() && subjectName.matches("^[a-zA-Z ]+$");
+        // Validate format
+        if (subjectName.isEmpty() || !subjectName.matches("^[a-zA-Z ]+$")) {
+            System.out.println("Invalid Subject Name: It must not be empty and can only contain letters and spaces.");
+            return false;
+        }
+
+        // Check for duplicates
+        for (Course subject : subjects) {
+            if (subject.getCourseName().equalsIgnoreCase(subjectName)) {
+                System.out.println("Duplicate Subject Name: " + subjectName + " already exists.");
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
      * Validates Price.
-     * Must be a positive numeric value.
+     * Must be a positive numeric value between 50 and 1000.
      */
-    private static boolean validatePrice(String priceInput) {
-    try {
-        double price = Double.parseDouble(priceInput); // Convert input to double
-        return price >= 50 && price <= 1000; // Validate price within the range
-    } catch (NumberFormatException e) {
-        return false; // Return false if input is not a valid number
+    public static boolean validatePrice(String priceInput) {
+        try {
+            double price = Double.parseDouble(priceInput); // Convert input to double
+            if (price < 50 || price > 1000) {
+                System.out.println("Invalid Price: Price must be between 50 and 1000.");
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Price: Please enter a numeric value.");
+            return false;
+        }
     }
-}
+
 
 
 /**
@@ -195,7 +240,7 @@ public class CourseUI {
 
         for (int i = 0; i < subjects.size(); i++) {
             Course subject = subjects.get(i); // Assuming Subject is the class used to represent a subject
-            System.out.printf("| %02d | %-20s | %-30s | %-50s |\n",
+            System.out.printf("| %02d | %-21s | %-36s | %-45s |\n",
                     i + 1, subject.getCourseId(), subject.getCourseName(), subject.getPrice());
         }
 
