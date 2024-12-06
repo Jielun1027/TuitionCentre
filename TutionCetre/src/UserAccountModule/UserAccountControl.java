@@ -187,7 +187,7 @@ public class UserAccountControl {
     }
 
     public static void moduleUI() {
-        System.out.println("-------------------");
+        System.out.println("\n\n-------------------");
         System.out.println("User Account Module");
         System.out.println("-------------------");
         System.out.println("1. Register Account \n");
@@ -196,7 +196,7 @@ public class UserAccountControl {
 
     }
 
-    public void registerAccount(List<UserAccount> users) {
+    public boolean registerAccount(List<UserAccount> users) {
         try {
             UserAccount newUser = control.createUserAccount();
             if (control.isUniqueDuplicate(newUser.getUsername(), newUser.getEmail(), users)) {
@@ -205,11 +205,12 @@ public class UserAccountControl {
                 users.add(newUser);
                 control.saveUsers(users);
                 System.out.println("\nCreated a user account successfully!");
+                return true;
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        return false;
     }
 
     public UserAccount enterUserAccount() {
@@ -230,8 +231,7 @@ public class UserAccountControl {
         } while (valid == false);
 
         valid = false;
-        
-        
+
         String password = "";
 
         do {
@@ -256,18 +256,29 @@ public class UserAccountControl {
 
     }
 
-    public void loginSystem(List<UserAccount> users) {
+    public boolean loginSystem(List<UserAccount> users) {
         try {
             //login function
             UserAccount newUser = control.enterUserAccount();
             if (control.checkLoginInfo(newUser.getUsername(), newUser.getPassword(), users)) {
                 System.out.println("\nLogin Successfully.");
+                return true;
             } else {
                 System.out.println("\nThe username or password is incorrect.");
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+        return false;
+
+    }
+
+    public static void homeUI() {
+        System.out.println("\n\n-------------------");
+        System.out.println("User Account Main Menu");
+        System.out.println("-------------------");
+        System.out.println("1. (Function in processing) \n");
+        System.out.print("Your option : ");
 
     }
 
@@ -279,13 +290,19 @@ public class UserAccountControl {
 
         List<UserAccount> users = control.loadUsers();
 
-        while (choice == 0) {
+        //test case
+        boolean testValid = false;
+        while (testValid == false) {
 //            System.out.println("enter:");
 //            String data = scanner.nextLine();
 //            UserAccountUtilities.validateUserType(data);
-            control.loginSystem(users);
+            testValid=control.loginSystem(users);
+            
+            if (testValid==true)
+                control.homeUI();
 
         }
+        
         while (choiceValid == false) {
             control.moduleUI();
 
@@ -300,19 +317,46 @@ public class UserAccountControl {
 
         }
 
+        boolean choiceResult = false;
+
         switch (choice) {
 
             case 1:
-                control.registerAccount(users);
+                choiceResult = control.registerAccount(users);
                 break;
             case 2:
-//                while (choice == 2) {
-                control.loginSystem(users);
-//                }
+                choiceResult = control.loginSystem(users);
                 break;
             default:
                 break;
         }
 
+        if (choiceResult == true) {
+
+            switch (choice) {
+
+                case 1:
+                    System.out.println("Navigating to Login Function.");
+                    control.loginSystem(users);
+                    break;
+                case 2:
+                    control.homeUI();
+                    break;
+                default:
+                    break;
+            }
+
+        } else {
+            switch (choice) {
+                case 1:
+                    control.moduleUI();
+                    break;
+                case 2:
+                    control.loginSystem(users);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
