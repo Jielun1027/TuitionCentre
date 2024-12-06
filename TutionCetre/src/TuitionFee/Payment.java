@@ -8,26 +8,28 @@ package TuitionFee;
  *
  * @author Chiew Jie Lun
  */
+import java.util.*;
 import java.time.LocalDate;
 import CourseManagement.Course;
 import Student.Student;
 
 public class Payment {
+
     private String paymentId;
     private Student student;
-    private Course course;
+    private List<Course> courses;
     private double amountPaid;
     private String paymentMethod;
     private LocalDate paymentDate;
     private boolean isPaid;
 
-    public Payment(String paymentId, Student student, Course course, double amountPaid, String paymentMethod) {
+    public Payment(String paymentId, Student student, List<Course> courses, double amountPaid, String paymentMethod, LocalDate paymentDate) {
         this.paymentId = paymentId;
         this.student = student;
-        this.course = course;
+        this.courses = courses;
         this.amountPaid = amountPaid;
         this.paymentMethod = paymentMethod;
-        this.paymentDate = LocalDate.now();
+        this.paymentDate = paymentDate;
         this.isPaid = false;
     }
 
@@ -39,8 +41,8 @@ public class Payment {
         return student;
     }
 
-    public Course getCourse() {
-        return course;
+    public List<Course> getCourses() {
+        return courses;
     }
 
     public double getAmountPaid() {
@@ -66,7 +68,7 @@ public class Payment {
     @Override
     public String toString() {
         return "Payment ID: " + paymentId + ", Student: " + student.getStudentName()
-                + ", Course: " + course.getCourseName() + ", Amount Paid: " + amountPaid
+                + ", Amount Paid: " + amountPaid
                 + ", Payment Method: " + paymentMethod + ", Date: " + paymentDate
                 + ", Status: " + (isPaid ? "Paid" : "Pending");
     }

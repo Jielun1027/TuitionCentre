@@ -12,12 +12,14 @@ import java.time.LocalDate;
 import java.util.*;
 import CourseManagement.Course;
 import Student.Student;
+import java.util.stream.Collectors;
 
 public class TutionFeePage {
 
     private static List<Course> unpaidCourses = new ArrayList<>();
     private static Set<String> paidMonths = new HashSet<>();
     private static Student student;
+    private static PaymentService paymentService = new PaymentService();
 
     public static void main(String[] args) {
         initializeCourses();
@@ -35,14 +37,14 @@ public class TutionFeePage {
             System.out.print("Enter Selection: ");
 
             int selection = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (selection) {
                 case 1:
                     makePayment(scanner);
                     break;
                 case 2:
-                    System.out.println("This feature is still under development");
+                    viewPaymentHistory();
                     break;
                 default:
                     System.out.println("Invalid selection. Exiting...");
@@ -75,7 +77,6 @@ public class TutionFeePage {
             return;
         }
 
-        // Display student information and courses to be paid
         System.out.println("\n\nStudent Name: " + student.getStudentName());
         System.out.println("\n              Tuition Fee(" + currentMonth + ")");
         System.out.println("========   ========================   ============");
@@ -115,8 +116,39 @@ public class TutionFeePage {
                 return;
         }
 
+        paymentService.createPayment(student, student.getEnrolledCourses(), totalAmount, paymentMethod);
         paidMonths.add(currentMonth);
 
         System.out.println("\nTuition fee for " + currentMonth + " is paid successfully using " + paymentMethod + "!\n");
+    }
+
+    private static void viewPaymentHistory() {
+        List<Payment> payments = paymentService.getPaymentHistory();
+        if (payments.isEmpty()) {
+            System.out.println("\nNo payment history available.\n");
+            return;
+        }
+        
+        System.out.println("                        ===============");
+        System.out.println("                        Payment History");
+        System.out.println("                        ===============\n");
+        System.out.println("Payment ID   Amount Paid   Payment Method   Date       ");
+        System.out.println("==========   ===========   ==============   ==========");
+
+        for (Payment payment : payments) {
+            System.out.printf("%-12s %-13.2f %-16s %s\n",
+                    payment.getPaymentId(),
+                    payment.getAmountPaid(),
+                    payment.getPaymentMethod(),
+                    payment.getPaymentDate());
+
+            // Print courses vertically
+            for (Course course : payment.getCourses()) {
+                System.out.printf("             %-10s %-12s\n",
+                        course.getCourseId(),
+                        course.getCourseName());
+            }
+            System.out.println("---------------------------------------------------");
+        }
     }
 }
