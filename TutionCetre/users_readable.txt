@@ -1,0 +1,6 @@
+UserAccount{username=leong, password=Pass1234., firstName=chew, secondName=hoeleong, email=chew@gmail.com, userType=student}
+UserAccount{username=1, password=Pass1245., firstName=as, secondName=as, email=c@g.c, userType=student}
+UserAccount{username=ab, password=Pass1234., firstName=CHEW, secondName=HL, email=c@g.ca, userType=student}
+UserAccount{username=hoeleong, password=Pass2002., firstName=Hafiz, secondName=Chew Hoe Leong, email=hoeleong@gmail.com, userType=student}
+UserAccount{username=a1, password=Chewhoeleong1@, firstName=Chew, secondName=Hoe Leong, email=chl@gmail.com, userType=teacher}
+UserAccount{username=2, password=Pass1234., firstName=Chew, secondName=Hoe Leong, email=chew12@gmail.com, userType=student}
