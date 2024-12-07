@@ -173,7 +173,7 @@ public void printAllTimetables() {
 
                         timetable.setSlot(day, period, subject);
                     } else {
-                        System.out.println("Class not found.");
+                        System.out.println("Class not found!");
                     }
                     break;
 
