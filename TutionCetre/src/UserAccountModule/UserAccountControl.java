@@ -8,6 +8,8 @@ import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Console;
+import java.io.IOException;
 
 /**
  *
@@ -117,7 +119,8 @@ public class UserAccountControl {
             passwordValid = UserAccountUtilities.validatePassword(password);
 
             if (!passwordValid) {
-                UserAccountUtilities.invalidMessage("At least eight characters including symbol, number, uppercase letter and lowercase letter.");
+                UserAccountUtilities.invalidMessage(
+                        "At least eight characters including symbol, number, uppercase letter and lowercase letter.");
             }
         } while (passwordValid == false);
 
@@ -214,9 +217,9 @@ public class UserAccountControl {
     }
 
     public UserAccount enterUserAccount() {
-        System.out.println("\n\n-------------------");
+        System.out.println("\n\n---------------");
         System.out.println("Login To System");
-        System.out.println("-------------------");
+        System.out.println("---------------");
 
         String username = "";
 
@@ -232,16 +235,20 @@ public class UserAccountControl {
 
         valid = false;
 
-        String password = "";
+        // String password = "";
 
-        do {
-            password = inputData("Password", 20);
-            valid = !UserAccountUtilities.checkEmpty(password);
-
-            if (!valid) {
-                System.out.println("The field must not be blank.");
-            }
-        } while (valid == false);
+        String password = getPasswordInput("Enter your password: ");
+        // System.out.println("Your password is: " + password); // For demonstration
+        // purposes
+        //
+        // do {
+        // password = inputData("Password", 20);
+        // valid = !UserAccountUtilities.checkEmpty(password);
+        //
+        // if (!valid) {
+        // System.out.println("The field must not be blank.");
+        // }
+        // } while (valid == false);
 
         return new UserAccount(username, password, "", "", "", "");
     }
@@ -258,7 +265,7 @@ public class UserAccountControl {
 
     public boolean loginSystem(List<UserAccount> users) {
         try {
-            //login function
+            // login function
             UserAccount newUser = control.enterUserAccount();
             if (control.checkLoginInfo(newUser.getUsername(), newUser.getPassword(), users)) {
                 System.out.println("\nLogin Successfully.");
@@ -273,10 +280,45 @@ public class UserAccountControl {
 
     }
 
+    public static String getPasswordInput(String prompt) {
+        Console console = System.console();
+
+        // If a console is available, use it for password masking
+        if (console != null) {
+            return new String(console.readPassword(prompt));
+        } else {
+            // Fallback for IDEs where Console is not available
+            System.out.print(prompt);
+            return readPasswordFallback();
+        }
+    }
+
+    private static String readPasswordFallback() {
+        StringBuilder password = new StringBuilder();
+        try {
+            while (true) {
+                // Read each character
+                int input = System.in.read();
+                if (input == '\n' || input == '\r') {
+                    // Break on Enter key
+                    break;
+                } else {
+                    password.append((char) input);
+                    System.out.print("*"); // Print * for each character
+                    System.out.println("yes");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(); // New line after password input
+        return password.toString();
+    }
+
     public static void homeUI() {
-        System.out.println("\n\n-------------------");
-        System.out.println("User Account Main Menu");
-        System.out.println("-------------------");
+        System.out.println("\n\n-------------------------------");
+        System.out.println("Tuition Centre System Main Menu");
+        System.out.println("-------------------------------");
         System.out.println("1. (Function in processing) \n");
         System.out.print("Your option : ");
 
@@ -290,19 +332,18 @@ public class UserAccountControl {
 
         List<UserAccount> users = control.loadUsers();
 
-        //test case
-        boolean testValid = false;
-        while (testValid == false) {
-//            System.out.println("enter:");
-//            String data = scanner.nextLine();
-//            UserAccountUtilities.validateUserType(data);
-            testValid=control.loginSystem(users);
-            
-            if (testValid==true)
-                control.homeUI();
-
-        }
-        
+        // test case
+        // boolean testValid = false;
+        // while (testValid == false) {
+        ////            System.out.println("enter:");
+////            String data = scanner.nextLine();
+////            UserAccountUtilities.validateUserType(data);
+        // testValid=control.loginSystem(users);
+        //
+        // if (testValid==true)
+        // control.homeUI();
+        //
+        // }
         while (choiceValid == false) {
             control.moduleUI();
 
