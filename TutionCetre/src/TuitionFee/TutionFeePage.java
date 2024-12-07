@@ -129,26 +129,29 @@ public class TutionFeePage {
             return;
         }
         
-        System.out.println("                        ===============");
-        System.out.println("                        Payment History");
-        System.out.println("                        ===============\n");
-        System.out.println("Payment ID   Amount Paid   Payment Method   Date       ");
-        System.out.println("==========   ===========   ==============   ==========");
+        System.out.println("\n            ***************");
+        System.out.println("            Payment History");
+        System.out.println("            ***************");
 
         for (Payment payment : payments) {
-            System.out.printf("%-12s %-13.2f %-16s %s\n",
-                    payment.getPaymentId(),
-                    payment.getAmountPaid(),
-                    payment.getPaymentMethod(),
-                    payment.getPaymentDate());
+            System.out.println("====================================");
+            System.out.println("        Payment ID: " + payment.getPaymentId());
+            System.out.println("====================================");
+            System.out.println("Course                  Price(RM)");
+            System.out.println("------------------------------------");
 
-            // Print courses vertically
+            double totalAmount = 0;
             for (Course course : payment.getCourses()) {
-                System.out.printf("             %-10s %-12s\n",
-                        course.getCourseId(),
-                        course.getCourseName());
+                System.out.printf("%-20s %10.2f\n", course.getCourseName(), course.getPrice());
+                totalAmount += course.getPrice();
             }
-            System.out.println("---------------------------------------------------");
+
+            System.out.println("------------------------------------");
+            System.out.printf("%-20s %10.2f\n", "Total(RM)", totalAmount);
+            System.out.println("------------------------------------");
+            System.out.println("Payment Method:     " + payment.getPaymentMethod());
+            System.out.println("Payment Date:       " + payment.getPaymentDate());
+            System.out.println("====================================\n");
         }
     }
 }
