@@ -1,4 +1,4 @@
 UserAccount{username=leong, password=Pass1234., firstName=chew, secondName=hoe leong, email=chew@gmail.com, userType=student, status=locked}
 UserAccount{username=a, password=Le123.dsf, firstName=ca, secondName=ca, email=c@g.c, userType=student, status=locked}
 UserAccount{username=ca, password=Pass1234., firstName=ca, secondName=ca, email=c1@g.c, userType=student, status=active}
-UserAccount{username=leong1, password=Pass1234., firstName=as, secondName=as, email=c2@g.c, userType=student, status=active}
+UserAccount{username=leong1, password=Pass12345., firstName=as, secondName=as, email=c2@g.c, userType=student, status=active}
