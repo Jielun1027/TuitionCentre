@@ -8,7 +8,10 @@ package UserAccountModule;
  *
  * @author Hafiz Chew Hoe Leong
  */
-public class UserAccount {
+
+import java.io.Serializable;
+
+public class UserAccount implements Serializable {
 
     private String username;
     private String password;
@@ -16,6 +19,7 @@ public class UserAccount {
     private String secondName;
     private String email;
     private String userType;
+    private String status;
 
     public UserAccount(String username, String password, String firstName, String secondName, String email, String userType) {
         this.username = username;
@@ -24,6 +28,7 @@ public class UserAccount {
         this.secondName = secondName;
         this.email = email;
         this.userType = userType;
+        this.status="active";
     }
 
     public String getUsername() {
@@ -74,11 +79,18 @@ public class UserAccount {
         this.userType = userType;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return "UserAccount{" + "username=" + username + ", password=" + password + ", firstName=" + firstName + ", secondName=" + secondName + ", email=" + email + ", userType=" + userType + '}';
+        return "UserAccount{" + "username=" + username + ", password=" + password + ", firstName=" + firstName + ", secondName=" + secondName + ", email=" + email + ", userType=" + userType + ", status=" + status + '}';
     }
-    
-    
+
 
 }

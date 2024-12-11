@@ -89,13 +89,17 @@ public class AdminInterface {
     }
 
     // Print all class timetables
-    public void printAllTimetables() {
+public void printAllTimetables() {
+    if (classTimetables.isEmpty()) {
+        System.out.println("No timetables exist.");
+    } else {
         classTimetables.forEach((className, timetable) -> {
             System.out.println("Timetable for " + className + ":");
             timetable.printTimetable();
             System.out.println();
         });
     }
+}
 
     // Function to customize timetables
     public void customizeTimetable() {
@@ -160,7 +164,7 @@ public class AdminInterface {
                         } while (period < 1 || period > 8); // Keep asking until valid period is entered
 
                         // Ask for subject input
-                        System.out.print("Enter Subject: ");
+                        System.out.print("Enter a Subject: ");
                         String subject = scanner.nextLine().trim();
                         if (subject.isEmpty()) {
                             System.out.println("Subject cannot be empty. Please try again.");

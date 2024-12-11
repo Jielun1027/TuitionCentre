@@ -1,23 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package UserAccountModule;
 
-import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap; // Added to manage failed attempts
+import java.util.HashMap;
 
 /**
  *
  * @author Hafiz Chew Hoe Leong
  */
-public class UserAccountControl {
+public class UserAccountControl_PasswordMasking {
 
-    static Scanner scanner = new Scanner(System.in);
-    private static UserAccountControl control = new UserAccountControl();
+    private static UserAccountControl_PasswordMasking control = new UserAccountControl_PasswordMasking();
     private static final String FILE_NAME = "users.dat";
 
     // Keep track of failed login attempts per username
@@ -49,7 +43,7 @@ public class UserAccountControl {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
             return (List<UserAccount>) ois.readObject();
         } catch (FileNotFoundException e) {
-            System.out.println("no file found");
+            System.out.println("No file found");
             return new ArrayList<>(); // Return an empty list if file not found
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -81,13 +75,15 @@ public class UserAccountControl {
         return new UserAccount(username, password, firstName, secondName, email, userType);
     }
 
+    // Changed from scanner.nextLine() to console.readLine()
     public String inputData(String dataField, int maxLength) {
         boolean valid = false;
         String data = "";
+        Console console = System.console();
 
         while (valid == false) {
             System.out.print("\nEnter " + dataField + ": ");
-            data = scanner.nextLine();
+            data = console.readLine(); // Using console for input
             valid = true;
             valid = UserAccountUtilities.validateStringLength(data, maxLength);
 
@@ -200,7 +196,6 @@ public class UserAccountControl {
         System.out.println("1. Register Account \n");
         System.out.println("2. Login \n");
         System.out.print("Your option : ");
-
     }
 
     public boolean registerAccount(List<UserAccount> users) {
@@ -226,7 +221,6 @@ public class UserAccountControl {
         System.out.println("---------------");
 
         String username = "";
-
         boolean valid = false;
         do {
             username = inputData("Username", 20);
@@ -238,14 +232,10 @@ public class UserAccountControl {
         } while (valid == false);
 
         valid = false;
-
         String password = "";
 
-        // System.out.println("Your password is: " + password); // For demonstration
-        // purposes
-        //
         do {
-            password = inputData("Password", 20);
+            password = getPasswordInput("\nEnter Password: ");
             valid = !UserAccountUtilities.checkEmpty(password);
 
             if (!valid) {
@@ -263,7 +253,6 @@ public class UserAccountControl {
             }
         }
         return false;
-
     }
 
     public boolean loginSystem(List<UserAccount> users) {
@@ -297,27 +286,22 @@ public class UserAccountControl {
             // Check login credentials
             if (control.checkLoginInfo(username, newUser.getPassword(), users)) {
                 System.out.println("\nLogin Successfully.");
-
-                // Reset failed attempts on successful login
                 failedAttempts.remove(username);
                 return true;
             } else {
                 System.out.println("\nThe username or password is incorrect.");
-
-                // Increment failed attempts
                 failedAttempts.put(username, failedAttempts.getOrDefault(username, 0) + 1);
 
-                // Lock account if max attempts reached
                 if (failedAttempts.get(username) >= MAX_FAILED_ATTEMPTS) {
                     for (UserAccount user : users) {
                         if (user.getUsername().equals(username)) {
-                            user.setStatus("locked"); // Update status to "locked"
+                            user.setStatus("locked");
                             break;
                         }
                     }
                     System.out.println(
                             "\nAccount locked due to too many failed login attempts. Please contact support from admin.");
-                    control.saveUsers(users); // Save updated list to both files
+                    control.saveUsers(users);
                 }
             }
         } catch (Exception e) {
@@ -326,13 +310,47 @@ public class UserAccountControl {
         return false;
     }
 
+    public static String getPasswordInput(String prompt) {
+        Console console = System.console();
+
+        if (console != null) {
+            return new String(console.readPassword(prompt));
+        } else {
+            System.out.print(prompt);
+            return readPasswordFallback();
+        }
+    }
+
+    private static String readPasswordFallback() {
+        StringBuilder password = new StringBuilder();
+        try {
+            while (true) {
+                int input = System.in.read();
+                if (input == '\n' || input == '\r') {
+                    break;
+                } else if (input == '\b') {
+                    if (password.length() > 0) {
+                        password.deleteCharAt(password.length() - 1);
+                        System.out.print("\b \b");
+                    }
+                } else {
+                    password.append((char) input);
+                    System.out.print("*");
+                }
+            }
+            System.out.println(); // Force newline after password
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return password.toString();
+    }
+
     public static void homeUI() {
         System.out.println("\n\n-------------------------------");
         System.out.println("Tuition Centre System Main Menu");
         System.out.println("-------------------------------");
         System.out.println("1. (Function in processing) \n");
         System.out.print("Your option : ");
-
     }
 
     public static void main(String[] args) {
@@ -342,27 +360,14 @@ public class UserAccountControl {
         int lastChoice = 2;
 
         List<UserAccount> users = control.loadUsers();
-
-        // test case
-        // boolean testValid = false;
-        // while (testValid == false) {
-        ////            System.out.println("enter:");
-////            String data = scanner.nextLine();
-////            UserAccountUtilities.validateUserType(data);
-        // testValid=control.loginSystem(users);
-        //
-        // if (testValid==true)
-        // control.homeUI();
-        //
-        // }
         boolean choiceResult = false;
 
         do {
-
             while (choiceValid == false) {
                 control.moduleUI();
 
-                String input = scanner.nextLine();
+                Console console = System.console();
+                String input = console.readLine();
                 choiceValid = UserAccountUtilities.validateDigit(input, firstChoice, lastChoice);
 
                 if (choiceValid == true) {
@@ -370,7 +375,6 @@ public class UserAccountControl {
                 } else {
                     System.out.println("The option only ranged from " + firstChoice + " to " + lastChoice + ".\n\n");
                 }
-
             }
 
             switch (choice) {
@@ -403,6 +407,5 @@ public class UserAccountControl {
             }
             choiceValid = false;
         } while (choiceResult == false);
-
     }
 }
