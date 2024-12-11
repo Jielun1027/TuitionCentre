@@ -109,7 +109,7 @@ public void printAllTimetables() {
             System.out.println("1. Add Class");
             System.out.println("2. Customize Class Timetable");
             System.out.println("3. Print All Timetables");
-            System.out.println("4. Delete Timetables");
+            System.out.println("4. Delete Timetable");
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
 
