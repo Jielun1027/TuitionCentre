@@ -131,6 +131,52 @@ public class UserAccountControl {
         return password;
     }
 
+    public String confirmPassword1() {
+
+        boolean passwordValid = false;
+        String password = "";
+
+        do {
+            System.out.print("\nEnter your new password (type 'x' to cancel):");
+            password = scanner.nextLine();
+
+            if (password.equalsIgnoreCase("x")) {
+                return null; // Indicate cancellation
+            }
+
+            passwordValid = UserAccountUtilities.validatePassword(password);
+
+            if (!passwordValid) {
+                UserAccountUtilities.invalidMessage(
+                        "At least eight characters including symbol, number, uppercase letter and lowercase letter.");
+            }
+        } while (passwordValid == false);
+
+        return password;
+    }
+
+    public String confirmPassword2(String originalPassword) {
+        boolean confirmed = false;
+        String confirmPassword = "";
+
+        do {
+            System.out.print("\nPlease confirm your password (type 'x' to cancel):");
+            confirmPassword = scanner.nextLine();
+
+            if (confirmPassword.equalsIgnoreCase("x")) {
+                return null; // Indicate cancellation
+            }
+
+            if (confirmPassword.equals(originalPassword)) {
+                confirmed = true;
+            } else {
+                System.out.println("\nPasswords do not match. Please try again.");
+            }
+        } while (!confirmed);
+
+        return confirmPassword;
+    }
+
     public String inputFirstName() {
         boolean valid = false;
         String data = "";
@@ -220,49 +266,49 @@ public class UserAccountControl {
         return false;
     }
 
-public UserAccount enterUserAccount(List<UserAccount> users) {
-    System.out.println("\n\n---------------");
-    System.out.println("Login To System");
-    System.out.println("---------------");
+    public UserAccount enterUserAccount(List<UserAccount> users) {
+        System.out.println("\n\n---------------");
+        System.out.println("Login To System");
+        System.out.println("---------------");
 
-    String username = "";
-    boolean valid = false;
+        String username = "";
+        boolean valid = false;
 
-    do {
-        System.out.print("\nEnter Username (or 'x' to reset password): ");
-        username = scanner.nextLine();
+        do {
+            System.out.print("\nEnter Username (or 'x' to reset password): ");
+            username = scanner.nextLine();
 
-        if (username.equalsIgnoreCase("x")) {
-            forgotPassword(users); // Navigate to Forgot Password function
-            return null; // Exit the current flow
-        }
+            if (username.equalsIgnoreCase("x")) {
+                forgotPassword(users); // Navigate to Forgot Password function
+                return null; // Exit the current flow
+            }
 
-        valid = !UserAccountUtilities.checkEmpty(username);
-        if (!valid) {
-            System.out.println("The field must not be blank.");
-        }
-    } while (!valid);
+            valid = !UserAccountUtilities.checkEmpty(username);
+            if (!valid) {
+                System.out.println("The field must not be blank.");
+            }
+        } while (!valid);
 
-    String password = "";
-    valid = false;
+        String password = "";
+        valid = false;
 
-    do {
-        System.out.print("\nEnter Password (or 'x' to reset password): ");
-        password = scanner.nextLine();
+        do {
+            System.out.print("\nEnter Password (or 'x' to reset password): ");
+            password = scanner.nextLine();
 
-        if (password.equalsIgnoreCase("x")) {
-            forgotPassword(users); // Navigate to Forgot Password function
-            return null; // Exit the current flow
-        }
+            if (password.equalsIgnoreCase("x")) {
+                forgotPassword(users); // Navigate to Forgot Password function
+                return null; // Exit the current flow
+            }
 
-        valid = !UserAccountUtilities.checkEmpty(password);
-        if (!valid) {
-            System.out.println("The field must not be blank.");
-        }
-    } while (!valid);
+            valid = !UserAccountUtilities.checkEmpty(password);
+            if (!valid) {
+                System.out.println("The field must not be blank.");
+            }
+        } while (!valid);
 
-    return new UserAccount(username, password, "", "", "", "");
-}
+        return new UserAccount(username, password, "", "", "", "");
+    }
 
     public boolean checkLoginInfo(String username, String password, List<UserAccount> users) {
         for (UserAccount user : users) {
@@ -275,11 +321,11 @@ public UserAccount enterUserAccount(List<UserAccount> users) {
     }
 
     public boolean loginSystem(List<UserAccount> users) {
-    try {
-        UserAccount newUser = control.enterUserAccount(users);
-        if (newUser == null) {
-            return false; // Exit if the user resets the password
-        }
+        try {
+            UserAccount newUser = control.enterUserAccount(users);
+            if (newUser == null) {
+                return false; // Exit if the user resets the password
+            }
             String username = newUser.getUsername();
 
             // Check if the username exists in the records before checking for locking or
@@ -336,51 +382,63 @@ public UserAccount enterUserAccount(List<UserAccount> users) {
         }
         return false;
     }
-    
+
     public UserAccount forgotPassword(List<UserAccount> users) {
-    System.out.println("\n\n----------------");
-    System.out.println("Forgot Password");
-    System.out.println("----------------");
+        System.out.println("\n\n----------------");
+        System.out.println("Forgot Password");
+        System.out.println("----------------");
 
-    // Prompt for username and email
-    String username = "";
-    boolean validUsername = false;
-    do {
-        username = inputData("Username", 20);
-        validUsername = !UserAccountUtilities.checkEmpty(username);
-        if (!validUsername) {
-            System.out.println("The field must not be blank.");
+        // Prompt for username and email
+        String username = "";
+        boolean validUsername = false;
+        do {
+            username = inputData("Username", 20);
+            validUsername = !UserAccountUtilities.checkEmpty(username);
+            if (!validUsername) {
+                System.out.println("The field must not be blank.");
+            }
+        } while (!validUsername);
+
+        String email = "";
+        boolean validEmail = false;
+        do {
+            email = inputData("Email", 20);
+            validEmail = !UserAccountUtilities.checkEmpty(email);
+            if (!validEmail) {
+                System.out.println("The field must not be blank.");
+            }
+        } while (!validEmail);
+
+        // Validate username and email combination
+        for (UserAccount user : users) {
+            if (user.getUsername().equals(username) && user.getEmail().equals(email)) {
+                System.out.println("\nUsername and Email verified.");
+
+                // Allow user to reset password
+                String newPassword = confirmPassword1();
+
+                if (newPassword == null) {
+                    System.out.println("\nPassword reset canceled. Returning to main menu.");
+                    return null;
+                }
+
+                String confirmedPassword = confirmPassword2(newPassword);
+
+                if (confirmedPassword == null) {
+                    System.out.println("\nPassword reset canceled. Returning to main menu.");
+                    return null;
+                }
+
+                user.setPassword(confirmedPassword);
+                System.out.println("\nPassword reset successfully.");
+                control.saveUsers(users); // Save the updated list to the file
+                return user;
+            }
         }
-    } while (!validUsername);
 
-    String email = "";
-    boolean validEmail = false;
-    do {
-        email = inputData("Email", 20);
-        validEmail = !UserAccountUtilities.checkEmpty(email);
-        if (!validEmail) {
-            System.out.println("The field must not be blank.");
-        }
-    } while (!validEmail);
-
-    // Validate username and email combination
-    for (UserAccount user : users) {
-        if (user.getUsername().equals(username) && user.getEmail().equals(email)) {
-            System.out.println("\nUsername and Email verified.");
-
-            // Allow user to reset password
-            String newPassword = inputPassword();
-            user.setPassword(newPassword);
-            System.out.println("\nPassword reset successfully.");
-            control.saveUsers(users); // Save the updated list to the file
-            return user;
-        }
+        System.out.println("\nInvalid Username or Email. Please try again.");
+        return null;
     }
-
-    System.out.println("\nInvalid Username or Email. Please try again.");
-    return null;
-}
-    
 
     public static void homeUI() {
         System.out.println("\n\n-------------------------------");
