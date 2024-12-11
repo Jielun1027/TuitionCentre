@@ -70,14 +70,15 @@ public class CourseUI {
                     break;
                 case 2:
                     displayAll();
+                    helper.clearConsole();
                     break;
                 case 3:
                     // TODO: Implement editSubject()
                     System.out.println("Feature under development.");
                     break;
                 case 4:
-                    // TODO: Implement deleteSubject()
-                    System.out.println("Feature under development.");
+                   deleteSubject();
+                   helper.clearConsole();
                     break;
                 case 5:
                     System.out.println("Returning to Main Menu...");
@@ -252,5 +253,65 @@ public class CourseUI {
     System.out.println("|                                              END OF REPORT                                                     |");
     System.out.println("+----------------------------------------------------------------------------------------------------------------+");
 }
+
+
+
+    /**
+     * ******************************************** DELETE PARTICULAR TUTOR
+     * **********************************************/
+    
+  public static void deleteSubject() throws IOException {
+    boolean continueDeleting = true;
+
+    while (continueDeleting) {
+        System.out.print("Enter the Subject ID you wish to delete (or -1 to quit): ");
+        String subjectIdToDelete = enter.readLine().trim();
+
+        if (subjectIdToDelete.equals("-1")) {
+            continueDeleting = false;
+            break;
+        }
+
+        boolean subjectFound = false;
+        Course selectedSubject = null;
+
+        for (Course subject : subjects) {
+            if (subject.getCourseId().equalsIgnoreCase(subjectIdToDelete)) {
+                subjectFound = true;
+                selectedSubject = subject;
+                break;
+            }
+        }
+
+        if (subjectFound) {
+            System.out.println("Matching subject found:");
+            System.out.println("**************************************************");
+            System.out.printf("  Subject ID           : %-50s\n", selectedSubject.getCourseId());
+            System.out.printf("  Subject Name         : %-50s\n", selectedSubject.getCourseName());
+            System.out.printf("  Price                : $%-50.2f\n", selectedSubject.getPrice());
+            System.out.println("**************************************************");
+
+            System.out.print("Do you want to delete this subject? (Y/N): ");
+            char choice = Character.toUpperCase(enter.readLine().charAt(0));
+
+            if (choice == 'Y') {
+                subjects.remove(selectedSubject);
+                System.out.println("Subject with ID " + selectedSubject.getCourseId() + " deleted successfully.");
+            } else {
+                System.out.println("Subject deletion cancelled.");
+            }
+        } else {
+            System.out.println("No matching subject found with the given ID.");
+        }
+
+        System.out.print("Do you want to delete another subject? (Y/N): ");
+        char continueChoice = Character.toUpperCase(enter.readLine().charAt(0));
+
+        if (continueChoice != 'Y') {
+            continueDeleting = false;
+        }
+    }
+    System.out.println("Exiting Delete Subject Module...");
 }
 
+    }
