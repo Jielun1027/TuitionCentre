@@ -15,6 +15,7 @@ import CourseManagement.Course;
 import Student.Student;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class PaymentService {
 
@@ -41,13 +42,13 @@ public class PaymentService {
 
     String generatePaymentId() {
         Random random = new Random();
-        int randomNumber = 100000 + random.nextInt(900000); // Generates a number between 100000 and 999999
+        int randomNumber = 100000 + random.nextInt(900000);
         return "TFP" + randomNumber;
     }
 
-    public Payment createPayment(Student student, List<Course> courses, double totalAmount, String paymentMethod) {
+    public Payment createPayment(Student student, List<Course> courses, double totalAmount, String paymentMethod, LocalDate paymentDate) {
         String paymentId = generatePaymentId();
-        Payment payment = new Payment(paymentId, student, courses, totalAmount, paymentMethod, LocalDate.now());
+        Payment payment = new Payment(paymentId, student, courses, totalAmount, paymentMethod, paymentDate);
         paymentHistory.add(payment);
         return payment;
     }
@@ -59,6 +60,36 @@ public class PaymentService {
 
     public List<Payment> getPaymentHistory() {
         return new ArrayList<>(paymentHistory);
+    }
+
+    public List<Payment> getPaymentsForStudent(Student student) {
+        return paymentHistory.stream()
+                .filter(payment -> payment.getStudent().equals(student))
+                .collect(Collectors.toList());
+    }
+
+    public List<Student> getStudentsWithOverduePayments(List<Student> allStudents, LocalDate dueDate) {
+        List<Student> overdueStudents = new ArrayList<>();
+
+        for (Student student : allStudents) {
+            List<Course> unpaidCourses = student.getEnrolledCourses()
+                    .stream()
+                    .filter(course -> {
+                        boolean isPaid = paymentHistory.stream()
+                                .anyMatch(payment -> payment.getStudent().equals(student)
+                                && payment.getCourses().contains(course)
+                                && payment.getPaymentDate().isBefore(dueDate));
+
+                        return !isPaid;
+                    })
+                    .collect(Collectors.toList());
+
+            if (!unpaidCourses.isEmpty()) {
+                overdueStudents.add(student);
+            }
+        }
+
+        return overdueStudents;
     }
 
 }
