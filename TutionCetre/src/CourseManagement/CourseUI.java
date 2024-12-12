@@ -218,9 +218,10 @@ public class CourseUI {
             }
             return true;
         } catch (NumberFormatException e) {
-            System.out.println("Invalid Price: Please enter a numeric value.");
+            System.out.println("Invalid Price: Please enter a numeric valuee.");
             return false;
         }
+        
     }
 
 
