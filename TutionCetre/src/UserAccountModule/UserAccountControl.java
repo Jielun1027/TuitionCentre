@@ -402,7 +402,7 @@ public class UserAccountControl {
         String email = "";
         boolean validEmail = false;
         do {
-            email = inputData("Email", 20);
+            email = inputEmail();
             validEmail = !UserAccountUtilities.checkEmpty(email);
             if (!validEmail) {
                 System.out.println("The field must not be blank.");
