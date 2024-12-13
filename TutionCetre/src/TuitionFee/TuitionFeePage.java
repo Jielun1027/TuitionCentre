@@ -197,26 +197,21 @@ public class TuitionFeePage {
     }
 
     public static void viewOverduePayments() {
-        // Get the current date
         LocalDate today = LocalDate.now();
 
-        // Start the table display
         System.out.println("\n========================================== Current Month: " + YearMonth.from(today) + " =========================================\n");
 
-        // Display payments for the current month
         System.out.println("===========================================================================================================");
         System.out.println("                                        Payments Made This Month");
         System.out.println("===========================================================================================================");
         System.out.printf("%-5s %-15s %-15s %-25s %-20s\n", "No.", "Payment ID", "Student ID", "Student Name", "Payment Date");
         System.out.println("-----------------------------------------------------------------------------------------------------------");
 
-        // Filter payments made in the current month
         List<Payment> currentMonthPayments = paymentService.getPaymentHistory()
                 .stream()
                 .filter(payment -> YearMonth.from(payment.getPaymentDate()).equals(YearMonth.from(today)))
                 .collect(Collectors.toList());
 
-        // Display all students who have made payments
         int index = 1; // Initialize counter for the row numbers
         for (Payment payment : currentMonthPayments) {
             System.out.printf("%-5d %-15s %-15s %-25s %-20s\n", index++, payment.getPaymentId(),
@@ -225,22 +220,19 @@ public class TuitionFeePage {
 
         System.out.println("-----------------------------------------------------------------------------------------------------------\n");
 
-        // Display overdue payments below
         System.out.println("===========================================================================================================");
         System.out.println("                                        Overdue Payments");
         System.out.println("===========================================================================================================");
         System.out.printf("%-5s %-15s %-25s %-20s\n", "No.", "Student ID", "Student Name", "Overdue Amount (RM)");
         System.out.println("-----------------------------------------------------------------------------------------------------------");
 
-        // Identify overdue payments
-        int overdueIndex = 1; // Initialize counter for overdue rows
+        int overdueIndex = 1;
         for (Student student : students) {
-            // Check if the student has not made a payment and if the current date is after the due date
             boolean paymentMadeThisMonth = currentMonthPayments.stream().anyMatch(p -> p.getStudent().equals(student));
             if (!paymentMadeThisMonth && today.isAfter(DUE_DATE)) {
                 double overdueAmount = student.getEnrolledCourses().stream()
                         .mapToDouble(Course::getPrice)
-                        .sum(); // Calculate overdue amount
+                        .sum();
 
                 System.out.printf("%-5d %-15s %-25s %-20.2f\n", overdueIndex++, student.getStudentId(), student.getStudentName(), overdueAmount);
             }
