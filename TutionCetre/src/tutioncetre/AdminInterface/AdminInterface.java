@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package tutioncetre.AdminInterface;
 
 import java.util.HashMap;
@@ -79,7 +75,7 @@ public class AdminInterface {
             classTimetables.put(className, new Timetable());
             System.out.println("Class " + className + " added.");
         } else {
-            System.out.println("Class " + className + " already exist.");
+            System.out.println("Class " + className + " already exists.");
         }
     }
 
@@ -89,17 +85,27 @@ public class AdminInterface {
     }
 
     // Print all class timetables
-public void printAllTimetables() {
-    if (classTimetables.isEmpty()) {
-        System.out.println("No timetables exist.");
-    } else {
-        classTimetables.forEach((className, timetable) -> {
-            System.out.println("Timetable for " + className + ":");
-            timetable.printTimetable();
-            System.out.println();
-        });
+    public void printAllTimetables() {
+        if (classTimetables.isEmpty()) {
+            System.out.println("No timetables exist.");
+        } else {
+            classTimetables.forEach((className, timetable) -> {
+                System.out.println("Timetable for " + className + ":");
+                timetable.printTimetable();
+                System.out.println();
+            });
+        }
     }
-}
+
+    // Delete all timetables
+    public void deleteAllTimetables() {
+        if (classTimetables.isEmpty()) {
+            System.out.println("No timetables to delete.");
+        } else {
+            classTimetables.clear();
+            System.out.println("All timetables have been deleted.");
+        }
+    }
 
     // Function to customize timetables
     public void customizeTimetable() {
@@ -109,7 +115,7 @@ public void printAllTimetables() {
             System.out.println("1. Add Class");
             System.out.println("2. Customize Class Timetable");
             System.out.println("3. Print All Timetables");
-            System.out.println("4. Delete Timetable");
+            System.out.println("4. Delete All Timetables");
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
 
@@ -118,7 +124,7 @@ public void printAllTimetables() {
                 choice = scanner.nextInt();  // Accepts integer input
                 scanner.nextLine();  // Clear the buffer
             } catch (InputMismatchException e) {
-                System.out.println("Invalid choice! Please enter a number between 1 and 4.");
+                System.out.println("Invalid choice! Please enter a number between 1 and 5.");
                 scanner.nextLine();  // Clear the buffer
                 continue;  // Skip the rest of the loop and ask again
             }
@@ -184,6 +190,11 @@ public void printAllTimetables() {
                     break;
 
                 case 4:
+                    // Delete all timetables
+                    deleteAllTimetables();
+                    break;
+
+                case 5:
                     // Exit the program
                     System.out.println("Exiting...");
                     return;
