@@ -9,7 +9,6 @@ package CourseManagement;
  * @author User
  */
 public class Course {
-
     private String courseId;
     private String courseName;
     private double price;
@@ -20,7 +19,6 @@ public class Course {
         this.price = price;
         
     }
-
     
     public String getCourseId() {
         return courseId;
@@ -33,9 +31,7 @@ public class Course {
     public String getCourseName() {
         return courseName;
     }
-    
-  
-      
+
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
@@ -58,5 +54,4 @@ public class Course {
         sb.append('}');
         return sb.toString();
     }
-
 }
