@@ -144,11 +144,17 @@ public class UserAccountControl {
                 return null; // Indicate cancellation
             }
 
-            passwordValid = UserAccountUtilities.validatePassword(password);
+            boolean empty = UserAccountUtilities.checkEmpty(password);
+            if (empty) {
+                System.out.println("The field must not be blank.");
+            } else {
 
-            if (!passwordValid) {
-                UserAccountUtilities.invalidMessage(
-                        "At least eight characters including symbol, number, uppercase letter and lowercase letter.");
+                passwordValid = UserAccountUtilities.validatePassword(password);
+
+                if (!passwordValid) {
+                    UserAccountUtilities.invalidMessage(
+                            "At least eight characters including symbol, number, uppercase letter and lowercase letter.");
+                }
             }
         } while (passwordValid == false);
 
@@ -167,10 +173,16 @@ public class UserAccountControl {
                 return null; // Indicate cancellation
             }
 
-            if (confirmPassword.equals(originalPassword)) {
-                confirmed = true;
+            boolean empty = UserAccountUtilities.checkEmpty(confirmPassword);
+            if (empty) {
+                System.out.println("The field must not be blank.");
             } else {
-                System.out.println("\nPasswords do not match. Please try again.");
+
+                if (confirmPassword.equals(originalPassword)) {
+                    confirmed = true;
+                } else {
+                    System.out.println("Passwords do not match. Please try again.\n");
+                }
             }
         } while (!confirmed);
 
@@ -245,6 +257,7 @@ public class UserAccountControl {
         System.out.println("-------------------");
         System.out.println("1. Register Account \n");
         System.out.println("2. Login \n");
+        System.out.println("3. Reset Password \n");
         System.out.print("Your option : ");
 
     }
@@ -385,7 +398,7 @@ public class UserAccountControl {
 
     public UserAccount forgotPassword(List<UserAccount> users) {
         System.out.println("\n\n----------------");
-        System.out.println("Forgot Password");
+        System.out.println("Reset Password");
         System.out.println("----------------");
 
         // Prompt for username and email
@@ -412,7 +425,7 @@ public class UserAccountControl {
         // Validate username and email combination
         for (UserAccount user : users) {
             if (user.getUsername().equals(username) && user.getEmail().equals(email)) {
-                System.out.println("\nUsername and Email verified.");
+                System.out.println("\nUsername and Email verified.\n");
 
                 // Allow user to reset password
                 String newPassword = confirmPassword1();
@@ -436,7 +449,7 @@ public class UserAccountControl {
             }
         }
 
-        System.out.println("\nInvalid Username or Email. Please try again.");
+        System.out.println("\nInvalid Username or Email. Password Recovery Failed.");
         return null;
     }
 
@@ -453,7 +466,7 @@ public class UserAccountControl {
         boolean choiceValid = false;
         int choice = 0;
         int firstChoice = 1;
-        int lastChoice = 2;
+        int lastChoice = 33;
 
         List<UserAccount> users = control.loadUsers();
 
@@ -494,6 +507,9 @@ public class UserAccountControl {
                 case 2:
                     choiceResult = control.loginSystem(users);
                     break;
+                case 3:
+                    choiceResult = (control.forgotPassword(users) != null);
+                    break;
                 default:
                     break;
             }
@@ -510,6 +526,10 @@ public class UserAccountControl {
                         break;
                     case 2:
                         control.homeUI();
+                        break;
+                    case 3:
+                        System.out.println("Navigating to Login Function.");
+                        choiceResult = control.loginSystem(users);
                         break;
                     default:
                         break;
