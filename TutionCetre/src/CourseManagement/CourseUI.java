@@ -302,7 +302,7 @@ public class CourseUI {
                 System.out.println("Subject deletion cancelled.");
             }
         } else {
-            System.out.println("No matching subject found with the given ID.");
+            System.out.println("No matching subject found with the ID.");
         }
 
         System.out.print("Do you want to delete another subject? (Y/N): ");
