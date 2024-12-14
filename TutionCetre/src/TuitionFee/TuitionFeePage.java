@@ -33,11 +33,41 @@ public class TuitionFeePage {
 
         while (true) {
             System.out.println("================");
-            System.out.println("Payment");
+            System.out.println("Welcome!");
+            System.out.println("================");
+            System.out.println("1. Student");
+            System.out.println("2. Admin");
+            System.out.println("3. Exit");
+            System.out.println("================");
+            System.out.print("Enter Selection: ");
+
+            int userType = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (userType) {
+                case 1:
+                    studentMenu(scanner);
+                    break;
+                case 2:
+                    adminMenu(scanner);
+                    break;
+                case 3:
+                    System.out.println("Exiting the system. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid selection. Please try again.");
+            }
+        }
+    }
+
+    private static void studentMenu(Scanner scanner) {
+        while (true) {
+            System.out.println("\n\n================");
+            System.out.println("Student Menu");
             System.out.println("================");
             System.out.println("1. Make Payment");
             System.out.println("2. View Payment History");
-            System.out.println("3. View Overdue Payments");
+            System.out.println("3. Back to Main Menu");
             System.out.println("================");
             System.out.print("Enter Selection: ");
 
@@ -52,11 +82,34 @@ public class TuitionFeePage {
                     viewPaymentHistory();
                     break;
                 case 3:
+                    return;
+                default:
+                    System.out.println("Invalid selection. Please try again.");
+            }
+        }
+    }
+
+    private static void adminMenu(Scanner scanner) {
+        while (true) {
+            System.out.println("\n\n================");
+            System.out.println("Admin Menu");
+            System.out.println("================");
+            System.out.println("1. View Overdue Payments");
+            System.out.println("2. Back to Main Menu");
+            System.out.println("================");
+            System.out.print("Enter Selection: ");
+
+            int selection = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (selection) {
+                case 1:
                     viewOverduePayments();
                     break;
-                default:
-                    System.out.println("Invalid selection. Exiting...");
+                case 2:
                     return;
+                default:
+                    System.out.println("Invalid selection. Please try again.");
             }
         }
     }
@@ -72,7 +125,6 @@ public class TuitionFeePage {
     }
 
     private static void initializeStudents() {
-        // Add students without creating payments yet
         students.add(new Student("12345", "John Doe", unpaidCourses));
         students.add(new Student("23456", "Jane Smith", unpaidCourses));
         students.add(new Student("34567", "Alice Johnson", unpaidCourses));
@@ -212,7 +264,7 @@ public class TuitionFeePage {
                 .filter(payment -> YearMonth.from(payment.getPaymentDate()).equals(YearMonth.from(today)))
                 .collect(Collectors.toList());
 
-        int index = 1; // Initialize counter for the row numbers
+        int index = 1;
         for (Payment payment : currentMonthPayments) {
             System.out.printf("%-5d %-15s %-15s %-25s %-20s\n", index++, payment.getPaymentId(),
                     payment.getStudent().getStudentId(), payment.getStudent().getStudentName(), payment.getPaymentDate());
