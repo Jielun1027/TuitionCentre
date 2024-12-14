@@ -100,7 +100,7 @@ public class AdminInterface {
     // Delete all timetables
     public void deleteAllTimetables() {
         if (classTimetables.isEmpty()) {
-            System.out.println("No timetables to delete.");
+            System.out.println("No timetable to delete.");
         } else {
             classTimetables.clear();
             System.out.println("All timetables have been deleted.");
