@@ -262,9 +262,8 @@ public class UserAccountControl {
 
     }
 
-    public boolean registerAccount(List<UserAccount> users) {
+    public boolean registerAccount(List<UserAccount> users, UserAccount newUser) {
         try {
-            UserAccount newUser = control.createUserAccount();
             if (control.isUniqueDuplicate(newUser.getUsername(), newUser.getEmail(), users)) {
                 System.out.println("\nFailed to create the account: Username or Email already exists.");
             } else {
@@ -466,7 +465,7 @@ public class UserAccountControl {
         boolean choiceValid = false;
         int choice = 0;
         int firstChoice = 1;
-        int lastChoice = 33;
+        int lastChoice = 3;
 
         List<UserAccount> users = control.loadUsers();
 
@@ -502,7 +501,8 @@ public class UserAccountControl {
 
             switch (choice) {
                 case 1:
-                    choiceResult = control.registerAccount(users);
+                    UserAccount newUser = control.createUserAccount();
+                    choiceResult = control.registerAccount(users, newUser);
                     break;
                 case 2:
                     choiceResult = control.loginSystem(users);
@@ -538,5 +538,17 @@ public class UserAccountControl {
             choiceValid = false;
         } while (choiceResult == false);
 
+    }
+
+    public int max(int a, int b) {
+        if (a > b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
+    public boolean equal(int a, int b) {
+        return a == b;
     }
 }
